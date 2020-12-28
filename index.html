@@ -1,0 +1,36 @@
+  
+<html>
+<head>
+<title>PKEC Popup response</title>
+</head>
+<body>
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////
+// OAUTH REDIRECT HANDLING
+
+// Handle the redirect back from the authorization server and
+// get an access token from the token endpoint
+
+var q = parseQueryString(window.location.search.substring(1));
+
+// Check if the server returned an error string
+if (q.error) {
+    console.error("Error returned from authorization server: " + q.error);
+}
+
+// If the server returned an authorization code, attempt to exchange it for an access token
+if (q.code) {
+    window.opener.postMessage(JSON.stringify({"code":q.code}), "*");
+}
+
+// Parse a query string into an object
+function parseQueryString(string) {
+    if (string == "") { return {}; }
+    var segments = string.split("&").map(s => s.split("="));
+    var queryString = {};
+    segments.forEach(s => queryString[s[0]] = s[1]);
+    return queryString;
+}
+</script>
+</body>
+</html>
